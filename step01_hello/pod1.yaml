@@ -1,0 +1,13 @@
+# ~/k8s_test/step01_hello/pod1.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    color: blue
+spec:
+  containers:
+  - name: nginx-ctn
+    image: nginx:latest
+

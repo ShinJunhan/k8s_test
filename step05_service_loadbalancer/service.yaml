@@ -1,0 +1,21 @@
+# step05_service_loadbalancer/service.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:
+  selector:
+    app: web-app
+  type: LoadBalancer    # 원래는 클라우드 제공자에서 로드밸런서를 프로비저닝 하는 type
+  ports:
+  - protocol: TCP
+    nodePort: 30002   # 30000~32767 사이의 port 를 개방할 수 있다
+    port: 8888        # 서비스의 port
+    targetPort: 80    # 연결할 pod 의 port
+  externalIPs:     # 클라우드 로드밸런서 외에 명시적으로 트래픽을 수신할 외부 고정 IP 지정
+    - 172.16.8.20
+      
+
+      
+

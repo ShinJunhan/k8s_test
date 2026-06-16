@@ -1,0 +1,19 @@
+# step04_service_nodeport/service.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:
+  selector:
+    app: web-app
+  type: NodePort    # 클러스터에 참여된 모든 node 의 port 를 개방
+  ports:
+  - protocol: TCP
+    nodePort: 30001   # 30000~32767 사이의 port 를 개방할 수 있다
+    port: 8888        # 서비스의 port
+    targetPort: 80    # 연결할 pod 의 port
+      
+
+      
+
