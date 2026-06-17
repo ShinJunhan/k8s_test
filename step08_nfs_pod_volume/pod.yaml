@@ -1,0 +1,18 @@
+# # step08_nfs_pod_volume/pod.yaml
+# [volume-test04-3-pod.yml] - PVC를 마운트하여 사용하는 파드 매니페스트
+apiVersion: v1
+kind: Pod	
+metadata:	
+  name: pod1
+spec:	
+  containers:	
+  - name: nginx-ctn	
+    image: nginx:latest	
+    volumeMounts:
+    - name: persistent-volume	
+      mountPath: /mount01   # 
+  volumes:
+  - name: persistent-volume	
+    persistentVolumeClaim:  # hostPath나 emptyDir 대신 미리 생성한 PVC를 참조
+      claimName: pvc01     # pvc.yml에서 생성한 PVC 이름
+ 

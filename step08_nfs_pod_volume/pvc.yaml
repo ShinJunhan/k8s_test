@@ -1,0 +1,13 @@
+# step08_nfs_pod_volume/pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc01  # pod 에서 이 이름으로 스토리지 할당을 한다
+spec:
+  accessModes:
+  - ReadWriteOnce # PV 접근 모드와 일치해야 한다
+  resources:
+    requests:
+      storage: 50Mi
+  # PV 에 작성한 pv class 명 (그룹명) 과 일치해야 한다
+  storageClassName: pv-test

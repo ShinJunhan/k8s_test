@@ -1,0 +1,20 @@
+# step07_host_volume/volume1.yaml
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: pod1
+spec:
+  # 특정 node 에 강제로 배포하고 싶을때는 nodeSelector: 를 사용한다 
+  nodeSelector:
+    kubernetes.io/hostname: node1 # host 명이 node1 인 node 에 설치를 하겠다 
+  containers:
+  - name: nginx-ctn
+    image: nginx:latest
+    volumeMounts:
+    - name: host-volume
+      mountPath: /mount01
+  volumes:
+    - name: host-volume
+      hostPath:
+        path: /home/user1/host-volume
+        type: DirectoryOrCreate # 이미 존재하는 디렉토리를 사용하거나 없으면 새로 생성하는 옵션
