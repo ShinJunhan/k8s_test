@@ -1,0 +1,29 @@
+# step03_service_clusterIP/deploy.yaml
+
+apiVersion: apps/v1   # pod 는 v1 이지만 deploy 에서는 apps/v1 이다
+kind: Deployment    # 리소스의 종류는 Deployment
+metadata:
+  # Deployment 의 사령관(컨트롤러)의 이름이 nginx-deploy 이다 (이름은 마음대로)
+  # 해당 namespace (default) 에서 유일한 이름으로 설정해야 한다
+  name: nginx-deploy  
+# pod 를 어떤 상태로 관리할 것인지 명시한다
+spec:
+  replicas: 3   # 배포되는 pod 의 개수 설정 (default 값은 1)
+  # 어떤 pod 를 관리할 것인지 선택하는 역할
+  selector:
+    # pod 중에 아래의 label 과 정확히 일치하는 pod 들을 관리하겠다
+    matchLabels:
+      # app: web-app -> app 이라는 키 값으로 web-app 이라는 value 를 가지고 있는 pod 를 의미
+      # key: value 형태 (key 와 value 는 마음대로 지을 수 있다) -> 관리의 편의를 위해 법칙 지정
+      app: web-app
+  # pod 의 설계도 역할 (pod 가 새로 생기거나 죽었다가 다시 살아날 때 설계도 대로 만들어진다)
+  template:
+    metadata:
+      labels:
+        # 위에서 정의한 selectoer 와 정확히 일치해야 한다
+        app: web-app
+    # pod 안에 어떤 container 를 띄울 지를 정의    
+    spec:
+      containers:
+      - name: nginx-ctn  # 컨테이너의 이름
+        image: nginx:latest  # 이미지
