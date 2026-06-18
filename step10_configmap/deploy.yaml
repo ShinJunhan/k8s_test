@@ -1,0 +1,22 @@
+# step10_configmap/deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        # 환경변수 값을 configmap 을 이용해서 주입하기
+        envFrom:
+        - configMapRef:
+            name: hello-config  # hello-config 라는 이름을 가지고 있는 configmap 을 이용

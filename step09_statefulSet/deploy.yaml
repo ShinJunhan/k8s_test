@@ -1,0 +1,19 @@
+# step09_statefulSet/deploy.yaml
+apiVersion: apps/v1
+kind: StatefulSet   # state 를 가지고 있는 Deployment 라고 생각하면 된다
+metadata:
+  name: nginx-deploy
+spec:
+  serviceName: headless-svc   # 연결할 headless 서비스의 이름을 명시
+  replicas: 3
+  selector:
+    matchLabels:
+      app: stateful-nginx
+  template:
+    metadata:
+      labels:
+        app: stateful-nginx
+    spec:
+      containers:
+      - name: nginx-ctn
+        image: nginx:latest

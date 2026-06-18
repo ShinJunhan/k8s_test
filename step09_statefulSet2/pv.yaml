@@ -1,0 +1,45 @@
+# step09_statefulSet2/pv.yaml
+apiVersion: v1
+kind: PersistentVolume  # (PV) 영속성을 가지는 Volume 만들기 
+metadata:
+  name: pv-sf-1
+spec:
+  accessModes:
+  - ReadWriteOnce   # 읽기, 쓰기를 하나의 pod 에서만 가능하도록 한다
+  capacity:
+    storage: 100Mi
+  persistentVolumeReclaimPolicy: Retain   # PVC 가 삭제되도 PV 는 유지 되도록 보존(Retain) 한다
+  storageClassName: pv-sf # 저장 공간의 그룹명
+  nfs:
+    server: 172.16.8.203
+    path: /nfs/shared/pv-sf-1
+---
+apiVersion: v1
+kind: PersistentVolume  # (PV) 영속성을 가지는 Volume 만들기 
+metadata:
+  name: pv-sf-2
+spec:
+  accessModes:
+  - ReadWriteOnce   # 읽기, 쓰기를 하나의 pod 에서만 가능하도록 한다
+  capacity:
+    storage: 100Mi
+  persistentVolumeReclaimPolicy: Retain   # PVC 가 삭제되도 PV 는 유지 되도록 보존(Retain) 한다
+  storageClassName: pv-sf # 저장 공간의 그룹명
+  nfs:
+    server: 172.16.8.203
+    path: /nfs/shared/pv-sf-2
+---
+apiVersion: v1
+kind: PersistentVolume  # (PV) 영속성을 가지는 Volume 만들기 
+metadata:
+  name: pv-sf-3
+spec:
+  accessModes:
+  - ReadWriteOnce   # 읽기, 쓰기를 하나의 pod 에서만 가능하도록 한다
+  capacity:
+    storage: 100Mi
+  persistentVolumeReclaimPolicy: Retain   # PVC 가 삭제되도 PV 는 유지 되도록 보존(Retain) 한다
+  storageClassName: pv-sf # 저장 공간의 그룹명
+  nfs:
+    server: 172.16.8.203
+    path: /nfs/shared/pv-sf-3

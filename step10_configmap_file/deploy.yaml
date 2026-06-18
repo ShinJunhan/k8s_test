@@ -1,0 +1,28 @@
+# step10_configmap_file/deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-custom
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: custom-web
+  template:
+    metadata:
+      labels:
+        app: custom-web
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        volumeMounts:
+        - name: config-vol
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx-conf-file
+      volumes:
+      - name: config-vol
+        # configmap 을 volume 처럼 활용할 수 있다
+        configMap:
+          name: nginx-config
+

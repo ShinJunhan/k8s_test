@@ -1,0 +1,16 @@
+# step09_statefulSet/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  # 여기에 정의한 서비스 이름을 StatefulSet 에 연결해야 한다
+  name: headless-svc
+spec:
+  selector:
+    app: stateful-nginx
+  # clusterIP: None 의미는 ip 를 할당하지 않고 Loadbalancing 을 하지 않겠다는 뜻
+  # 단지 selector 에 부학하는 StatefulSet 의 단일 진입점 역할만 하겠다
+  # clusterIP: None 되어 있는 서비를 Headless 서비스라고 부른다
+  clusterIP: None
+  ports:
+  - protocol: TCP
+    port: 80

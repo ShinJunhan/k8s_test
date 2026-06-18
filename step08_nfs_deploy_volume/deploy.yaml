@@ -1,0 +1,29 @@
+# step08_nfs_deploy_volume/deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # nginx-deploy 라는 이름의 사령관을 만들겠다
+  name: nginx-deploy
+# 어떤 pod 를 어떤 식으로 관리할 것인지 명시 한다  
+spec:
+  replicas: 3   # 복제 pod의 갯수는 항상 2로 유지
+  selector:
+    matchLabels:
+      # app=web-app 이라는 label 을 가지고 있는 pod 들을 대상으로 하겠다
+      app: web-app    
+  # 실행할 pod 의 설계도
+  template:
+    metadata:	
+      labels:
+        app: web-app
+    spec:	
+      containers:	
+      - name: nginx-ctn	
+        image: nginx:latest	
+        volumeMounts:
+        - name: persistent-volume	
+          mountPath: /mount01   # 
+      volumes:
+      - name: persistent-volume	
+        persistentVolumeClaim:  # hostPath나 emptyDir 대신 미리 생성한 PVC를 참조
+          claimName: pvc01     # pvc.yml에서 생성한 PVC 이름

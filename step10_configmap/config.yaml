@@ -1,0 +1,10 @@
+# step10_configmap/config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-config
+data:
+  # key: value 의 형태로 문자열을 보관해 둘 수 있다
+  # pod 들의 환경변수로 활용된다
+  APP_MODE: "development"
+  GREETING_MSG: "hello, configmap!"
