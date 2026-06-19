@@ -1,0 +1,57 @@
+# step14_dev-namespace/dev-team1.yaml
+
+# [1단계] 개발용 Namespace 설정
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+---
+# [2단계] 해당 namespace 에서 사용할 수 있는 자원 제약 설치
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: repo-quota
+  namespace: dev
+spec:
+   hard:
+    requests.cpu: "2"     # cpu 제한
+    requests.memory: 2Gi  # memory 제한
+    pods: "10"            # pod 숫자
+    services: "5"         # service 숫자
+---
+# [3단계] 개발자 계정 (Service Account) 생성
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  # 개발팀 team1 이 dev 네임스페이스를 사용하도록 하겠다는 의미
+  name: team1 
+  namespace: dev
+---
+# [4단계] 계정용 토큰(secret) 발행
+apiVersion: v1
+kind: Secret
+metadata:
+  name: team1-token
+  namespace: dev
+  annotations:
+    # 계정명을 team1 으로 하겠다
+    kubernetes.io/service-account.name: team1
+type: kubernetes.io/service-account-token
+---
+# [5단계] dev namespace 안에서는 admin 역할을 할 수 있도록 권한주기
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: team1-admin-binding
+  namespace: dev
+subjects:
+- kind: ServiceAccount
+  name: team1   # team1 이라는 계정은 
+  namespace: dev  # dev namespace 에서 
+# 아래의 권한을 행사할 수 있다 (admin)  
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+
+

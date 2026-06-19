@@ -1,0 +1,45 @@
+# step12_postgres/deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pg-main
+spec:
+  replicas: 1     # main db 이기 때문에 1개만 존재
+  strategy:
+    type: Recreate  # 혹시 죽었다가 다시 배포될 때, 기존에 있는 걸 삭제하고 다시 만들도록 설정
+  selector:
+    matchLabels:
+      app: pg-main
+  template:
+    metadata:
+      labels:
+        app: pg-main
+    spec:
+      containers:
+      - name: pg-main-ctn
+        image: postgres:15
+        ports:
+        - containerPort: 5432
+        # DB 계정 비밀번호는 secrets 로부터 얻어내서 환경변수에 주입
+        envFrom:
+        - secretRef:
+            name: postgres-secret
+        # 직접 주입할 환경변수는 env 에 작성하면 된다
+        # 동일한 환경변수명이 secret 에 있으면 아래의 정보로 오버라이딩이 된다
+        env:
+        - name: POSTGRES_DB
+          value: scott_db
+        volumeMounts:
+        - name: pg-init-script
+          mountPath: /docker-entrypoint-initdb.d/init.sql   # postgres 초기화 파일 경로
+          subPath: init.sql   # configmap 의 키값을 그대로 subPath 에 작성된다
+        - name: persistent-volume
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: pg-init-script
+        configMap:
+          name: db-init-config
+      - name: persistent-volume 
+        persistentVolumeClaim:
+          claimName: pvc-postgres   # pvc 의 metadate name 과 일치해야 한다
+  

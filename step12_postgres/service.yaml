@@ -1,0 +1,13 @@
+# step12_postgres/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+spec:
+  selector:
+    app: pg-main  # template 에 정의한 pod 의 labels 와 일치해야 한다
+  type: ClusterIP # 만일 연결할 대싱이 StatefulSet 이면 clusterIP: None 해서 headlsee 로 만들어야 한다
+  ports:
+  - protocol: TCP # 생략해도 기본값이 tcp
+    port: 5432    # 서비스가 노출할 port
+    targetPort: 5432  # 연결할 pod 의 port

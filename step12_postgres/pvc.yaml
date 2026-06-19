@@ -1,0 +1,12 @@
+# step12_postgres/pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-postgres
+spec:
+  accessModes:
+    - ReadWriteOnce # pv 의 accessModes 와 일치해야 한다
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: pv-postgres # pv 에 정의한 클래스명과 일치해야 한다  

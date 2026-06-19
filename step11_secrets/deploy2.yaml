@@ -1,0 +1,23 @@
+# step11_secrets/deploy2.yaml
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: secret-test-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: secret-test
+  template:
+    metadata:
+      labels:
+        app: secret-test
+    spec:
+      containers:
+      - name: db-test-container
+        image: alpine   # 가벼운 테스트용 리눅스 이미지
+        command: ["sleep", "3600"]    # 켜지자마자 꺼지지 않게 1시간 동안 대기
+        # envFrom 을 이용해서 secreyt 에 있는 모든 값을 환경변수에 넣을 수 있다
+        envFrom:
+        - secretRef:
+            name: db-pass-secret

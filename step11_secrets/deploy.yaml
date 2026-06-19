@@ -1,0 +1,28 @@
+# step11_secrets/deploy.yaml
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: secret-test-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: secret-test
+  template:
+    metadata:
+      labels:
+        app: secret-test
+    spec:
+      containers:
+      - name: db-test-container
+        image: alpine   # 가벼운 테스트용 리눅스 이미지
+        command: ["sleep", "3600"]    # 켜지자마자 꺼지지 않게 1시간 동안 대기
+        env:
+        - name: DB_PASSWORD   # 컨테이너 안에서 쓰일 환경변수의 이름
+          # 위의 환경변수 값을 
+          valueFrom: 
+            secretKeyRef:
+              # db-pass-secret 이라는 이름의 Secret 에
+              name: db-pass-secret
+              # POSTGRES_PASSWORD 라는 키 값으로 저장된 value 를 읽어와서 넣어주겠다는 의미
+              key: POSTGRES_PASSWORD
