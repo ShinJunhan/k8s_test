@@ -1,0 +1,7 @@
+# step15_dev-namespace-helm/dev-tenant-maker/Chart.yaml
+apiVersion: v2          # helm 자체 버전
+name: dev-tenant-maker
+description: k8s 멀티 테넌시 자동 생성 # 차트에 대한 간단한 설명
+type: application
+version: "0.1.0"        # 우리가 만드는 chart 버전
+appVersion: "1.0.0"     # chart 안에 app 이 있다면 그 app 의 버전 (여기서는 의미 없는 sample 버전)

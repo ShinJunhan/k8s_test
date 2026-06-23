@@ -1,0 +1,45 @@
+# step16_cnpg/pv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-postgres-1
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi                       # NFS 서버 남은 용량에 맞게 적절히 지정
+  persistentVolumeReclaimPolicy: Retain # 그 데이터 보존 정책!
+  storageClassName: pv-postgres   # <-- pv 클래스명 확인!!
+  nfs:
+    server: 172.16.8.203                # NFS IP 주소 그대로 이식!
+    path: /nfs/shared/pv-postgres-1  # NFS 공유 디렉터리 경로!
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-postgres-2
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi                       # NFS 서버 남은 용량에 맞게 적절히 지정
+  persistentVolumeReclaimPolicy: Retain # 그 데이터 보존 정책!
+  storageClassName: pv-postgres   # <-- pv 클래스명 확인!!
+  nfs:
+    server: 172.16.8.203                # NFS IP 주소 그대로 이식!
+    path: /nfs/shared/pv-postgres-2  # NFS 공유 디렉터리 경로!
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-postgres-3
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi                       # NFS 서버 남은 용량에 맞게 적절히 지정
+  persistentVolumeReclaimPolicy: Retain # 그 데이터 보존 정책!
+  storageClassName: pv-postgres   # <-- pv 클래스명 확인!!
+  nfs:
+    server: 172.16.8.203                # NFS IP 주소 그대로 이식!
+    path: /nfs/shared/pv-postgres-3  # NFS 공유 디렉터리 경로!    

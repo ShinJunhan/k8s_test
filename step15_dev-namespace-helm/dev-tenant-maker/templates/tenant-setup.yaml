@@ -1,0 +1,57 @@
+# step15_dev-namespace-helm/dev-tenant-maker/templates/tenant-setup.yaml
+
+# [1단계] 개발용 Namespace 설정
+apiVersion: v1
+kind: Namespace
+# helm (go lang) 에서도 더블 브레이스를 사용한다
+metadata:
+  # .Values.<변수명>
+  name: {{ .Values.namespace }}         # dev
+---
+# [2단계] 해당 namespace 에서 사용할 수 있는 자원 제약 설치
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  # 문자열을 이어 붙일 때 에러 방지를 위해 "" 로 감싼다
+  name: "{{ .Values.teamName }}-quota"  # team1-quota
+  namespace: {{ .Values.namespace }}    # dev
+spec:
+   hard:
+    # quota 는 object 임으로 quota.cpu 참조
+    # 참조되는 결과값을 " " 로 묶고 싶으면 | quote 를 추가한다
+    requests.cpu: {{ .Values.quota.cpu | quote }}         # cpu: "2"
+    requests.memory: {{ .Values.quota.memory | quote }}   # memory: "2Gi"
+    pods: {{ .Values.quota.pods | quote }}                # pod: "10"
+    services: {{ .Values.quota.services | quote }}        # services: "5"
+---
+# [3단계] 개발자 계정(ServiceAccount) 생성
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.teamName }}
+  namespace: {{ .Values.namespace }}
+---
+# [4단계] 계정용 로그인 토큰(Secret) 발행
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "{{ .Values.teamName }}-token"
+  namespace: {{ .Values.namespace }}
+  annotations:
+    kubernetes.io/service-account.name: "{{ .Values.teamName }}"
+type: kubernetes.io/service-account-token
+---
+# [5단계] 해당 동네 안에서만 admin 노릇을 하라는 권한(RoleBinding) 임명
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: "{{ .Values.teamName }}-admin-binding"
+  namespace: {{ .Values.namespace }}
+subjects:
+- kind: ServiceAccount
+  name: {{ .Values.teamName }}
+  namespace: {{ .Values.namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
