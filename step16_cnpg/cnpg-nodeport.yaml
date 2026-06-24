@@ -1,0 +1,16 @@
+# cnpg-nodeport.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-pg-cluster-external
+  namespace: default
+spec:
+  type: NodePort
+  ports:
+    - port: 5432
+      targetPort: 5432
+      nodePort: 30032     # (30000~32767 사이 중 하나 지정)
+  selector:
+    # cnpg 가 생성한 master pod 의 label 을 연결 (2개의 조건이 모두 맞아야 selector 에 의해 선택이 된다)
+    cnpg.io/cluster: my-pg-cluster
+    cnpg.io/instanceRole: primary 

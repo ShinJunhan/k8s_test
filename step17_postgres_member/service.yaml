@@ -1,0 +1,13 @@
+# step17_postgres_member/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: member-app-service 
+spec:
+  type: ClusterIP
+  selector:
+    app: member-app
+  ports:  
+  - protocol: TCP
+    port: 8000      
+    targetPort: 8000

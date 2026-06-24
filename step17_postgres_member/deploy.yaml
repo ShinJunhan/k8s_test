@@ -1,0 +1,28 @@
+# step17_postgres_member/deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: member-app
+  labels:
+    app: member-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: member-app
+  template:
+    metadata:
+      labels:
+        app: member-app
+    spec:
+      containers:
+      - name: member-app-ctn
+        image: myoli999/step17-app:1.0 
+        ports:
+        - containerPort: 8000
+        # DB 접속 정보를 환경변수로 넣어준다
+        env:
+        - name: WRITABLE_URL
+          value: "postgresql://scott:tiger@my-pg-cluster-rw:5432/scott_db"
+        - name: READONLY_URL
+          value: "postgresql://scott:tiger@my-pg-cluster-ro:5432/scott_db"
