@@ -1,0 +1,9 @@
+# step20_ingress_metallb/02-ip-pool.yaml
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: ip-pool   # 이 이름을 03-advertise.yaml 파일에서 참조 사용
+  namespace: metallb-system
+spec:
+  addresses:
+  - 172.16.8.30-172.16.8.50   # 배정할 ip pool 을 설정한다
