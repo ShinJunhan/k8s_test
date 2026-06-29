@@ -53,4 +53,9 @@ chmod 600 config
 
 # 연결확인
 ssh -T git@github.com
+
+# argocd 설치 후 삭제하는 방법
+kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.11.0/manifests/install.yaml
+
+
 ```
