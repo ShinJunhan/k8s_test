@@ -1,0 +1,15 @@
+# my-helm-chart/charts/helm01_member/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  # Chart 의 정보 참조할때는 첫글자를 대문자로
+  name: "{{ .Chart.Name }}-service" 
+spec:
+  # values.yaml 파일에 있는 내용을 참조해서 전달하기
+  type: {{ .Values.service.type }}
+  selector:
+    app: {{ .Chart.Name }} 
+  ports:
+  - protocol: TCP
+    port: {{ .Values.service.port }}      
+    targetPort: {{ .Values.containerPort }}
