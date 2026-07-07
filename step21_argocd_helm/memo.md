@@ -16,8 +16,11 @@ helm repo ls
 kubectl create namespace argocd
 
 # 5. helm 을 이용해서 설치하기
+# 기존 정보를 지우고 다시 설치할 경우
+kubectl delete crd $(kubectl get crd | grep argoproj.io | awk '{print $1}')
+
 # helm install <배포 이름> <배포할 내용> -n <namespace> -f <옵션 정보를 가지고 있는 yaml>
-helm install my-argocd argo/argo-cd -n argocd -f my-values.yaml
+helm install argocd argo/argo-cd -n argocd -f my-values.yaml
 
 # 비밀번호 
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo

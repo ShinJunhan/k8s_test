@@ -1,0 +1,7 @@
+# step24_microservice_helm/charts/market/Chart.yaml
+apiVersion: v2
+name: market-app
+description: market fastapi service
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

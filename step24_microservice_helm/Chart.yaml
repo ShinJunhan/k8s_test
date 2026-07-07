@@ -1,0 +1,26 @@
+# step24_microservice_helm/Chart.yaml
+apiVersion: v2
+name: msa-platform
+description: index + market + post
+type: application
+version: 0.1.0  # chart 의 버전
+appVersion: "1.0.0" # application 의 버전
+
+# 의존하는 dependency chart 목록
+dependencies:
+  - name: index-app
+    version: "0.1.0"
+    # "file://하위 chart 의 경로를 작성"
+    repository: "file://charts/index"
+    # 하위 chart 를 무조건 포함하는 것이 아니고 조건부로 포함하겠다는 의미
+    condition: index-app.enabled
+
+  - name: market-app
+    version: "0.1.0"
+    repository: "file://charts/market"
+    condition: market-app.enabled
+
+  - name: post-app
+    version: "0.1.0"
+    repository: "file://charts/post"
+    condition: psot-app.enabled

@@ -1,0 +1,7 @@
+# step24_microservice_helm/charts/post/Chart.yaml
+apiVersion: v2
+name: post-app
+description: post fastapi service
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
